@@ -1,0 +1,13 @@
+#!/bin/sh
+$HOME/opt/cross/bin/i686-elf-gcc -T linker.ld -o myos -ffreestanding -O2 -nostdlib boot.s kernel.c -lgcc
+if grub2-file --is-x86-multiboot myos; then
+  echo Yep Multiboot
+else
+  echo Not multiboot
+  exit 1
+fi
+mkdir -p isodir/boot/grub/
+cp myos isodir/boot/myos
+rm myos.iso
+sudo grub2-mkrescue -o myos.iso isodir
+qemu-system-i386 -cdrom myos.iso
