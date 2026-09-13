@@ -1,0 +1,8 @@
+#!/bin/sh
+nano kernel.c
+$HOME/opt/cross/bin/i686-elf-gcc-15.2.0 -T linker.ld -o myos -ffreestanding -O2 -nostdlib boot.s kernel.c -lgcc
+rm -f isodir/boot/myos
+mv myos isodir/boot
+sudo grub-mkrescue -o KittyOS.kittyiso.iso isodir
+qemu-system-i386 -cdrom KittyOS.kittyiso.iso
+rm -f KittyOS.kittyiso.iso
