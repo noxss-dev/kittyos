@@ -6,6 +6,21 @@
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
+// Source - https://stackoverflow.com/q/2488563
+// Posted by skydoor, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-09-14, License - CC BY-SA 2.5
+
+char *
+strcat(char *dest, const char *src)
+{
+    size_t i,j;
+    for (i = 0; dest[i] != '\0'; i++)
+        ;
+    for (j = 0; src[j] != '\0'; j++)
+        dest[i+j] = src[j];
+    dest[i+j] = '\0';
+    return dest;
+}
 
 /* This tutorial will only work for the 32-bit ix86 targets. */
 #if !defined(__i386__)
@@ -178,6 +193,19 @@ void terminal_write(const char* data, size_t size)
 	for (size_t i = 0; i < size; i++)
 		{ terminal_putchar(data[i]);  }
 }
+// Source - https://stackoverflow.com/a/34873406
+// Posted by Gianluca Ghettini, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-09-14, License - CC BY-SA 4.0
+
+int strcmp(const char* s1, const char* s2)
+{
+    while(*s1 && (*s1 == *s2))
+    {
+        s1++;
+        s2++;
+    }
+    return *(const unsigned char*)s1 - *(const unsigned char*)s2;
+}
 
 void terminal_writestring(const char* data) 
 {
@@ -188,6 +216,8 @@ void terminal_writestring(const char* data)
 
 void kernel_main(void) 
 {
+	char irps2kdv[4096];
+	char buf[4096];
 	/* Initialize terminal interface */
 	terminal_initialize();
 	terminal_setcolor(vga_entry_color(VGA_COLOR_CYAN, VGA_COLOR_BLACK));
@@ -212,15 +242,19 @@ void kernel_main(void)
 		}
 		char ps2kdv = ps2kd[c];
 		if (c != 0x0E && ps2kdv != '\n') {
-		terminal_column = 0;
 		terminal_putentryat(ps2kdv, terminal_color, text_x, terminal_row);
-		gotx = gotx + 1;
 		text_x = text_x + 1;
-		
+		char *extrakb = malloc(len + 1 + 1);
+		strcpy(extrakb, buf);
+		extrakb[strlen(buf)] = ps2kdv;
+		extrakb[strlen(buf) + 1] = '\0';
+		free(extrakb);
 		update_cursor(text_x, terminal_row);
-		} else if (c == 0x0E) {
-			terminal_buffer[(text_x - 1 ) * VGA_HEIGHT * terminal_row] = vga_entry(' ', terminal_color);
 		} else if (ps2kdv == '\n') {
+			
+			text_x = strlen("@ studio .: ");
+			terminal_row = terminal_row + 1;
+			terminal_writestring("meow");
 			terminal_row = terminal_row + 1;
 			terminal_setcolor(vga_entry_color(VGA_COLOR_CYAN, VGA_COLOR_BLACK));
 			terminal_writestring("@ studio .: ");

@@ -1,0 +1,7 @@
+#!/bin/bash
+str=$(ls /home)
+IFS=' ' read -r -a fx <<< "$str"
+sh -c "/home/${fx[0]}/opt/cross/bin/i686-elf-gcc-15.2.0 -T linker.ld -o myos -ffreestanding -O2 -nostdlib boot.s kernel.c -lgcc"
+rm -f isodir/boot/myos
+mv myos isodir/boot
+grub-mkrescue -o "/home/${fx[0]}/.KittyOS.kittyiso.iso" isodir
