@@ -1,30 +1,23 @@
-Kitty i686 Operating system
-*************************************************
+Kitty ix86 Operating system
+******************************
 Imagine someone so unemployeed he made an entire,
 non Linux-based operating system for his cat
 hehehhehe >:]
------------------------------------------------
+-----------------------------
 KittyOS needs an ix86 processor (compiled
 with i686-elf-gcc). HOWEVER,
 x86_64 (or amd64) is still supported via
 instruction retrocompatibility!!
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 KittyOS needs to be compiled on arch-based
-systems as Arch, CachyOS, Manjaro, etc.
-It includes a nice installer called devmkiso.
+systems as Arch, CachyOS, Manjaro, etc. It includes a nice installer called devmkiso.
 ALWAYS use devmkiso to build instead of manual
 compilation. You find the steps for the manual
 compilation in the devmkiso script (as it is
 a normal Bourne Again SHell script >:D)
 devmkiso requires the following packages:
-GRand Unified BootLoader (you don't need to
-install GRUB as your bootloader,
-you just need the package)
+GRand Unified BootLoader (you don't need to install GRUB as your bootloader, you just need the package)
 i686-elf-gcc located in ~/opt/cross/* (you
 can either compile it yourself
 our check out lordmiiko's repo
 to grab a precompiled one)
-A file editor specified in the EDITOR
-enviroment variable
-QEMU (to launch it on a VM,
-completely optional)
